@@ -5,10 +5,10 @@
 </p>
 
 <p align="center">
-  ![Smart Campus](https://img.shields.io/badge/Domain-Smart%20Campus-blue?style=for-the-badge)
-  ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=for-the-badge&logo=javascript)
-  ![HTML5](https://img.shields.io/badge/HTML5-Frontend-orange?style=for-the-badge&logo=html5)
-  ![CSS3](https://img.shields.io/badge/CSS3-Styling-blue?style=for-the-badge&logo=css3)
+  <img src="https://img.shields.io/badge/Domain-Smart%20Campus-blue?style=for-the-badge" alt="Smart Campus">
+  <img src="https://img.shields.io/badge/JavaScript-ES6%2B-yellow?style=for-the-badge&logo=javascript" alt="JavaScript">
+  <img src="https://img.shields.io/badge/HTML5-Frontend-orange?style=for-the-badge&logo=html5" alt="HTML5">
+  <img src="https://img.shields.io/badge/CSS3-Styling-blue?style=for-the-badge&logo=css3" alt="CSS3">
 </p>
 
 ---
