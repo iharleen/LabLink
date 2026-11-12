@@ -1,0 +1,15 @@
+const CH={};
+function chart(id,type,labels,data,label,horiz){const c=$('#'+id);if(!c)return;CH[id]?.destroy();const p=c.parentElement;
+ if(!data.some(x=>x>0)){p.innerHTML=`<div class=empty>No data yet</div>`;return}
+ if(!window.Chart){p.innerHTML='<b>'+esc(label)+'</b><br>'+labels.map((l,i)=>`${esc(l)}: ${data[i]}`).join('<br>');return}
+ const cols=['#4776E6','#20B8C5','#269B70','#E5A23C','#DC6262','#14243A','#8491A5'];
+ CH[id]=new Chart(c,{type,data:{labels,datasets:[{label,data,backgroundColor:type=='doughnut'?cols:'#4776E6'}]},options:{indexAxis:horiz?'y':'x',responsive:true,plugins:{legend:{display:type=='doughnut'}}}})}
+const cnt=(L,f)=>{const m={};L.forEach(x=>m[f(x)]=(m[f(x)]||0)+1);return m};
+function mostBooked(){const m={};DB.d.bookings.filter(b=>['Approved','Active','Completed'].includes(b.status)).forEach(b=>m[DB.eqName(b.equipmentId)]=(m[DB.eqName(b.equipmentId)]||0)+b.qty);return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,6)}
+function weekly(){const d=new Date(),mon=new Date(d);mon.setDate(d.getDate()-((d.getDay()+6)%7));const out=[0,0,0,0,0,0,0];DB.d.bookings.forEach(b=>{const diff=Math.round((new Date(b.date)-new Date(today(-((d.getDay()+6)%7))))/864e5);if(diff>=0&&diff<7)out[diff]++});return out}
+function drawDashCharts(){const m=mostBooked();chart('c1','bar',m.map(x=>x[0]),m.map(x=>x[1]),'Units booked',true);chart('c2','bar',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],weekly(),'Bookings')}
+function viewAnalytics(){const B=DB.d.bookings,dec=B.filter(b=>['Approved','Rejected','Active','Completed'].includes(b.status)),ap=dec.filter(b=>b.status!=='Rejected').length,E=DB.d.equipment,tot=E.reduce((a,e)=>a+e.total,0),use=E.reduce((a,e)=>a+(e.total-availNow(e)),0);
+ $('#view').innerHTML=`<div class=grid><div class="card stat"><b>${B.length}</b><span>Total reservations</span></div><div class="card stat"><b>${dec.length?Math.round(ap/dec.length*100)+'%':'—'}</b><span>Approval rate</span></div><div class="card stat"><b>${tot?Math.round(use/tot*100):0}%</b><span>Utilization today</span></div><div class="card stat"><b>${DB.d.maintenanceReports.length}</b><span>Maintenance reports</span></div></div><br><div class="grid g2">${['a1:Category distribution','a2:Most booked','a3:Weekly activity','a4:Availability today','a5:Maintenance by status'].map(s=>`<div class=card><b>${s.split(':')[1]}</b><div><canvas id=${s.split(':')[0]}></canvas></div></div>`).join('')}</div>`;
+ const c=cnt(E,e=>e.category);chart('a1','doughnut',Object.keys(c),Object.values(c),'Equipment');const m=mostBooked();chart('a2','bar',m.map(x=>x[0]),m.map(x=>x[1]),'Units',true);chart('a3','bar',['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],weekly(),'Bookings');
+ chart('a4','doughnut',['Available','In use','Maintenance'],[E.filter(e=>!e.maintenance).reduce((a,e)=>a+availNow(e),0),use,E.filter(e=>e.maintenance).reduce((a,e)=>a+e.total,0)],'Units');
+ const ms=cnt(DB.d.maintenanceReports,r=>r.status);chart('a5','bar',['Reported','Under Inspection','Repairing','Resolved'],['Reported','Under Inspection','Repairing','Resolved'].map(k=>ms[k]||0),'Reports')}

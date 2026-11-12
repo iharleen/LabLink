@@ -1,0 +1,4 @@
+function notify(msg,type='info'){DB.d.notifications.unshift({id:uid('N'),msg,type,date:new Date().toISOString(),read:false});DB.save()}
+function viewNotifications(){const L=DB.d.notifications;$('#view').innerHTML=`<div class=card><div class=row><button class="btn sm" onclick="DB.d.notifications.forEach(n=>n.read=true);DB.save();render()">Mark all read</button></div>`+(L.length?L.map(n=>`<div class="notif ${n.read?'':'unread'}"><span>${esc(n.msg)}<br><small>${new Date(n.date).toLocaleString()}</small></span><span>${n.read?'':`<button class="btn sm ghost" onclick="markRead('${n.id}')">Read</button> `}<button class="btn sm danger" onclick="delNotif('${n.id}')">Delete</button></span></div>`).join(''):'<div class=empty>🔔 No notifications</div>')+'</div>'}
+function markRead(id){DB.d.notifications.find(n=>n.id===id).read=true;DB.save();render()}
+function delNotif(id){DB.d.notifications=DB.d.notifications.filter(n=>n.id!==id);DB.save();render()}

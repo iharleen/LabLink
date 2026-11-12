@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LabLink — Lab Equipment Booking</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+<script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.min.js" defer></script>
+</head><body>
+<aside id="side"><div class="logo">🔬 LabLink</div><nav class="nav" id="nav"></nav><div class="demo">Demo Mode · data stays in this browser</div></aside>
+<div class="main">
+<header><button class="btn ghost" id="menu">☰</button><h2 id="title"></h2><div class="sp"></div>
+<label class="role"><input type="checkbox" id="adm"> Demo Admin Mode</label>
+<button class="btn ghost" id="bell" title="Notifications">🔔 <span id="nb" class="cnt"></span></button></header>
+<main id="view"></main></div>
+<div id="modal"></div><div id="toasts"></div>
+<script src="js/storage.js"></script><script src="js/notifications.js"></script><script src="js/equipment.js"></script>
+<script src="js/bookings.js"></script><script src="js/maintenance.js"></script><script src="js/analytics.js"></script><script src="js/app.js"></script>
+</body></html>
